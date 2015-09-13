@@ -12,6 +12,8 @@
 		7EC5D57F1BA5DAF400EFC496 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7EC5D57D1BA5DAF400EFC496 /* Main.storyboard */; };
 		7EC5D5811BA5DAF400EFC496 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7EC5D5801BA5DAF400EFC496 /* Assets.xcassets */; };
 		7EC5D5841BA5DAF400EFC496 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7EC5D5821BA5DAF400EFC496 /* LaunchScreen.storyboard */; };
+		7EC5D58D1BA5DB2600EFC496 /* CoreSpotlight.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7EC5D58B1BA5DB2600EFC496 /* CoreSpotlight.framework */; };
+		7EC5D58E1BA5DB2600EFC496 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7EC5D58C1BA5DB2600EFC496 /* MobileCoreServices.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +24,8 @@
 		7EC5D5801BA5DAF400EFC496 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		7EC5D5831BA5DAF400EFC496 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		7EC5D5851BA5DAF400EFC496 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		7EC5D58B1BA5DB2600EFC496 /* CoreSpotlight.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreSpotlight.framework; path = System/Library/Frameworks/CoreSpotlight.framework; sourceTree = SDKROOT; };
+		7EC5D58C1BA5DB2600EFC496 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -29,15 +33,45 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7EC5D58D1BA5DB2600EFC496 /* CoreSpotlight.framework in Frameworks */,
+				7EC5D58E1BA5DB2600EFC496 /* MobileCoreServices.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		7E200EFB1BA6316D004D18C1 /* Root */ = {
+			isa = PBXGroup;
+			children = (
+				7EC5D5791BA5DAF400EFC496 /* AppDelegate.swift */,
+			);
+			name = Root;
+			sourceTree = "<group>";
+		};
+		7E200EFC1BA63174004D18C1 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				7EC5D57B1BA5DAF400EFC496 /* ViewController.swift */,
+			);
+			name = Controllers;
+			sourceTree = "<group>";
+		};
+		7E200EFD1BA6317F004D18C1 /* Ressources */ = {
+			isa = PBXGroup;
+			children = (
+				7EC5D57D1BA5DAF400EFC496 /* Main.storyboard */,
+				7EC5D5801BA5DAF400EFC496 /* Assets.xcassets */,
+				7EC5D5821BA5DAF400EFC496 /* LaunchScreen.storyboard */,
+				7EC5D5851BA5DAF400EFC496 /* Info.plist */,
+			);
+			name = Ressources;
+			sourceTree = "<group>";
+		};
 		7EC5D56D1BA5DAF300EFC496 = {
 			isa = PBXGroup;
 			children = (
+				7EC5D58F1BA5DB2D00EFC496 /* Frameworks */,
 				7EC5D5781BA5DAF400EFC496 /* iOS9-NewAPI-CoreSpotlight-SimpleExample */,
 				7EC5D5771BA5DAF400EFC496 /* Products */,
 			);
@@ -54,14 +88,20 @@
 		7EC5D5781BA5DAF400EFC496 /* iOS9-NewAPI-CoreSpotlight-SimpleExample */ = {
 			isa = PBXGroup;
 			children = (
-				7EC5D5791BA5DAF400EFC496 /* AppDelegate.swift */,
-				7EC5D57B1BA5DAF400EFC496 /* ViewController.swift */,
-				7EC5D57D1BA5DAF400EFC496 /* Main.storyboard */,
-				7EC5D5801BA5DAF400EFC496 /* Assets.xcassets */,
-				7EC5D5821BA5DAF400EFC496 /* LaunchScreen.storyboard */,
-				7EC5D5851BA5DAF400EFC496 /* Info.plist */,
+				7E200EFB1BA6316D004D18C1 /* Root */,
+				7E200EFC1BA63174004D18C1 /* Controllers */,
+				7E200EFD1BA6317F004D18C1 /* Ressources */,
 			);
 			path = "iOS9-NewAPI-CoreSpotlight-SimpleExample";
+			sourceTree = "<group>";
+		};
+		7EC5D58F1BA5DB2D00EFC496 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				7EC5D58B1BA5DB2600EFC496 /* CoreSpotlight.framework */,
+				7EC5D58C1BA5DB2600EFC496 /* MobileCoreServices.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -285,6 +325,7 @@
 				7EC5D58A1BA5DAF400EFC496 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
