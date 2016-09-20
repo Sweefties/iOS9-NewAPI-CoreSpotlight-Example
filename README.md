@@ -20,6 +20,11 @@ iOS 9~ Experiments - New API Components - Internal Search APIs with CoreSpotligh
 Tested on iOS 9.1 Simulators, iPhone 6.
 
 
+## Important
+
+Get the master branch for XCode 8 / Swift 3 updated project.
+
+
 ## App Transport Security Settings
 
 To support HTTP hosted : add the Boolean type Value to `YES` for `NSAllowsArbitraryLoads` in app's `info.plist` file.
