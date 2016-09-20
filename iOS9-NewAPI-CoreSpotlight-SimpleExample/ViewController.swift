@@ -16,7 +16,7 @@ import MobileCoreServices
 struct Item {
     var title: String
     var category: String
-    var date: NSDate
+    var date: Date
     var thumbnail: String
 }
 
@@ -36,31 +36,31 @@ class ViewController: UIViewController {
     var objects = [
         Item(title: "iPhone 6S",
             category: "iOS",
-            date: NSDate(),
+            date: Date(),
             thumbnail: "http://specials-images.forbesimg.com/imageserve/55f0e8a1e4b0ffa7afe47e3d/0x600.jpg?fit=scale&background=000000"),
         Item(title: "iPhone 6S Plus",
             category: "iOS",
-            date: NSDate(timeIntervalSinceNow: 3600 * 0.5),
+            date: Date(timeIntervalSinceNow: 3600 * 0.5),
             thumbnail: "http://cdn2.gsmarena.com/vv/pics/apple/apple-iphone-6s-plus-00.jpg"),
         Item(title: "Apple Watch",
             category: "WatchOS",
-            date: NSDate(timeIntervalSinceNow: 3600 * 1.5),
+            date: Date(timeIntervalSinceNow: 3600 * 1.5),
             thumbnail: "http://blogs-images.forbes.com/kristintablang/files/2015/09/Apple-Watch-Hermes-Double-Tour.png"),
         Item(title: "Apple Tv",
             category: "tvOS",
-            date: NSDate(timeIntervalSinceNow: 3600 * 2.0),
+            date: Date(timeIntervalSinceNow: 3600 * 2.0),
             thumbnail: "http://blogs-images.forbes.com/ianmorris/files/2015/09/apple-tv.jpg"),
         Item(title: "iPad Pro",
             category: "iOS",
-            date: NSDate(timeIntervalSinceNow: 3600 * 2.5),
+            date: Date(timeIntervalSinceNow: 3600 * 2.5),
             thumbnail: "http://cdn2.gsmarena.com/vv/pics/apple/apple-ipad-pro-01.jpg"),
         Item(title: "Apple Music",
             category: "iOS, OSX",
-            date: NSDate(timeIntervalSinceNow: 3600 * 3.5),
+            date: Date(timeIntervalSinceNow: 3600 * 3.5),
             thumbnail: "http://iphonesoft.fr/images/_062015/apple-music.jpg"),
         Item(title: "Beats 1",
             category: "iOS, OSX",
-            date: NSDate(timeIntervalSinceNow: 3600 * 4.0),
+            date: Date(timeIntervalSinceNow: 3600 * 4.0),
             thumbnail: "http://factmag-images.s3.amazonaws.com/wp-content/uploads/2015/06/beats-1-250615-616x440.jpg")
     ]
     
@@ -97,21 +97,21 @@ extension SearchAPI {
             attributeSet.title = item.title
             
             // date formatter
-            let dateFormatter = NSDateFormatter()
-            dateFormatter.dateStyle = .MediumStyle
-            dateFormatter.timeStyle = .ShortStyle
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateStyle = .medium
+            dateFormatter.timeStyle = .short
             
-            attributeSet.contentDescription = item.category + " - " + dateFormatter.stringFromDate(item.date)
-            attributeSet.contentCreationDate = dateFormatter.dateFromString("\(item.date)")
+            attributeSet.contentDescription = item.category + " - " + dateFormatter.string(from: item.date)
+            attributeSet.contentCreationDate = dateFormatter.date(from: "\(item.date)")
             
             // in this example we put optionnals images on Spotlight results
-            if let url = NSURL(string: item.thumbnail) {
-                if let data = NSData(contentsOfURL: url){
+            if let url = URL(string: item.thumbnail) {
+                if let data = try? Data(contentsOf: url){
                     attributeSet.thumbnailData = data
                 }
             }
             // define search keywords
-            var keywords = item.title.componentsSeparatedByString(" ")
+            var keywords = item.title.components(separatedBy: " ")
             keywords.append(item.category)
             attributeSet.keywords = keywords
             
@@ -121,7 +121,7 @@ extension SearchAPI {
             
         }
         // On-device Index
-        CSSearchableIndex.defaultSearchableIndex().indexSearchableItems(searchableItems) { (error) -> Void in
+        CSSearchableIndex.default().indexSearchableItems(searchableItems) { (error) -> Void in
             if error != nil {
                 print(error?.localizedDescription)
             }else{
@@ -139,20 +139,20 @@ typealias TableViewDataSource = ViewController
 extension TableViewDataSource : UITableViewDataSource {
     
     /// sections
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
     
     /// rows
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return objects.count ?? 0
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return objects.count 
     }
     
     /// cells
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier(cellID, forIndexPath: indexPath)
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: cellID, for: indexPath)
         // configure cell
-        let result = objects[indexPath.row]
+        let result = objects[(indexPath as NSIndexPath).row]
         cell.textLabel?.text = result.title
         cell.detailTextLabel?.text = result.category
         if cell.imageView?.image == nil, let imgURL = result.thumbnail as String? {
@@ -163,20 +163,32 @@ extension TableViewDataSource : UITableViewDataSource {
     }
     
     /// get image for cell
-    func getImageForCell(urlString: String, cellForRowAtIndexPath indexPath: NSIndexPath) {
+    func getImageForCell(_ urlString: String, cellForRowAtIndexPath indexPath: IndexPath) {
         var image: UIImage?
         
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
-            if let data = NSData(contentsOfURL: NSURL(string: urlString)!) {
-                image = UIImage(data: data)
+        DispatchQueue.global(qos: .userInteractive).async(execute: {
+            if let data = try? Data(contentsOf: URL(string: urlString)!) {
+                image = UIImage(data: data)!
                 
-                dispatch_async(dispatch_get_main_queue()) {
-                    let cell = self.tableView.dequeueReusableCellWithIdentifier(self.cellID, forIndexPath: indexPath)
+                DispatchQueue.main.async {
+                    let cell = self.tableView.dequeueReusableCell(withIdentifier: self.cellID, for: indexPath)
                     cell.imageView?.image = image?.circleMask
-                    self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .None)
+                    self.tableView.reloadRows(at: [indexPath], with: .none)
                 }
             }
-        }
+        })
+        
+        /*DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.default).async {
+            if let data = try? Data(contentsOf: URL(string: urlString)!) {
+                image = UIImage(data: data)
+                
+                DispatchQueue.main.async {
+                    let cell = self.tableView.dequeueReusableCell(withIdentifier: self.cellID, for: indexPath)
+                    cell.imageView?.image = image?.circleMask
+                    self.tableView.reloadRows(at: [indexPath], with: .none)
+                }
+            }
+        }*/
     }
     
 }
@@ -186,7 +198,7 @@ extension TableViewDataSource : UITableViewDataSource {
 typealias TableViewDelegate = ViewController
 extension TableViewDelegate : UITableViewDelegate {
 
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 100.0
     }
 }
@@ -200,18 +212,18 @@ extension UIImage {
         let square = size.width < size.height ? CGSize(width: size.width, height: size.width) : CGSize(width: size.height, height: size.height)
         let imageView = UIImageView(frame: CGRect(origin: CGPoint(x: 0, y: 0), size: square))
         
-        imageView.contentMode = UIViewContentMode.ScaleAspectFill
+        imageView.contentMode = UIViewContentMode.scaleAspectFill
         imageView.image = self
         imageView.layer.cornerRadius = square.width/2
-        imageView.layer.borderColor = UIColor.whiteColor().CGColor
+        imageView.layer.borderColor = UIColor.white.cgColor
         imageView.layer.borderWidth = 5
         imageView.layer.masksToBounds = true
         UIGraphicsBeginImageContext(imageView.bounds.size)
-        imageView.layer.renderInContext(UIGraphicsGetCurrentContext()!)
+        imageView.layer.render(in: UIGraphicsGetCurrentContext()!)
         
         let result = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         
-        return result
+        return result!
     }
 }

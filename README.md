@@ -1,6 +1,6 @@
 ![](https://img.shields.io/badge/build-pass-brightgreen.svg?style=flat-square)
 ![](https://img.shields.io/badge/platform-iOS9+-ff69b4.svg?style=flat-square)
-![](https://img.shields.io/badge/Require-XCode7-lightgrey.svg?style=flat-square)
+![](https://img.shields.io/badge/Require-XCode%208-lightgrey.svg?style=flat-square)
 
 
 # iOS 9 - New API - CoreSpotlight - Example
@@ -13,11 +13,16 @@ iOS 9~ Experiments - New API Components - Internal Search APIs with CoreSpotligh
 
 ## Requirements
 
-- >= XCode 7.0 / 7.1 beta~. (writed with xcode 7.1 beta)
-- >= Swift 2.
+- >= XCode 8.0.
+- >= Swift 3.
 - >= iOS 9.0.
 
-Tested on iOS 9.1 Simulators, iPhone 6.
+Tested on iOS 9.1 Simulators, iPhone 6, iPhone 7.
+
+
+## Important
+
+this is the Xcode 8 / Swift updated project.
 
 
 ## App Transport Security Settings
